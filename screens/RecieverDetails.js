@@ -19,14 +19,16 @@ export default class UserDetailsScreen extends Component{
           exchangerRequestDocId : ''
         }
     }
+
     getUserDetails(){
+      console.log(this.state.recieverId)
         db.collection('users').where('email_id','==',this.state.recieverId).get()
         .then(snapshot=>{
             snapshot.forEach(doc =>{
                 this.setState({
                   exchangerName : doc.data().first_name,
                   receiverContact : doc.data().contact,
-                  exchangerAddress: doc.data().exchangerAddress
+                  exchangerAddress: doc.data().address
                 })
             })
         });
@@ -88,7 +90,7 @@ export default class UserDetailsScreen extends Component{
                   <Text style={{fontWeight: 'bold'}}>Name : {this.state.exchangerName}</Text>
                  </Card>   
                  <Card>
-                  <Text style={{fontWeight: 'bold'}}>Contact :{this.state.exchangerContact}</Text>   
+                  <Text style={{fontWeight: 'bold'}}>Contact :{this.state.receiverContact}</Text>   
                  </Card>
                  <Card>
                   <Text style={{fontWeight: 'bold'}}>Address :{this.state.exchangerAddress}</Text>   
