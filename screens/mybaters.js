@@ -15,9 +15,10 @@ import {
 import db from '../config';
 import firebase from 'firebase';
 import {ListItem,Icon} from 'react-native-elements';
-import MyHeader from '../components/MyHeader';
+import {Card,Header} from 'react-native-elements'
 
-export default class BaterScreen extends Component {
+
+export default class BarterScreen extends Component {
   constructor() {
     super();
     this.state = {
@@ -31,7 +32,7 @@ export default class BaterScreen extends Component {
 
   getAllBarters = () => {
     console.log(this.state.allBarters)
-     this.requestRef = db.collection("all_Barters").where("donor_id" ,'==', this.state.userId)
+     this.requestRef = db.collection("my_barters").where("donorId" ,'==', this.state.userId) 
      .onSnapshot((snapshot)=>{
        var allBarters = snapshot.docs.map(document => document.data());
        this.setState({
@@ -39,6 +40,9 @@ export default class BaterScreen extends Component {
        });
     });
   };
+
+
+
 
   componentDidMount() {
     this.getAllBarters();
@@ -50,13 +54,13 @@ export default class BaterScreen extends Component {
         key={i}
         title={item.item_name} 
 subtitle={'Requested By: '+item.requested_by+"\nStatus :" +item.request_status}  
-      titleStyle={{ color: 'black', fontWeight: 'bold' }} 
-      leftElement={<Icon name='book' type="font-awesome" color="#696969"/>}
-        rightElement={
-          <TouchableOpacity style={styles.button}>
-            <Text style={{color:'#ffff'}}>Excahnge</Text>
-          </TouchableOpacity>
-        }
+titleStyle={{ color: 'black', fontWeight: 'bold' }} 
+leftElement={<Icon name='book' type="font-awesome" color="#696969"/>}
+rightElement={
+<TouchableOpacity style={styles.button}>
+<Text style={{color:'white ' }}>Excahnge</Text>
+</TouchableOpacity>
+                  }
                 bottomDivider
       />
     );
@@ -67,10 +71,26 @@ subtitle={'Requested By: '+item.requested_by+"\nStatus :" +item.request_status}
   render() {
     return (
       <View style={{flex:1}}>
-      <MyHeader title="My Baters" navigation={this.props.navigation} />
+<Header 
+leftComponent={
+<Icon name='arrow-left' 
+type='feather' 
+color='#696969' 
+onPress={()=>this.props.navigation.goBack()}
+/>
+}
+centerComponent={{text: "My Barters",
+style:{color: '#90A5A9',
+fontSize: 20,
+fontWeight:'bold'
+}}
+}
+backgroundColor="#eaf8fe"
+/>
+
         <View style={{flex:1}}>
         {this.state.allBarters.length === 0 ? (
-          <Text style={{ fontSize: 20 }}>      List of baters is not avialalbe.       </Text>
+          <Text style={{ fontSize: 20 }}>     List of barters is not avialalbe.       </Text>
         ) : (
             <FlatList
               keyExtractor={this.keyExtractor}
