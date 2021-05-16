@@ -17,7 +17,9 @@ export default class UserDetailsScreen extends Component{
           exchangerContact: '',
           exchangerAddress : '',
           exchangerRequestDocId : ''
+          
         }
+
     }
 
     getUserDetails(){
@@ -56,6 +58,8 @@ export default class UserDetailsScreen extends Component{
         componentDidMount(){
             this.getUserDetails()
         }
+
+  
 
     render(){
         return(
@@ -104,6 +108,7 @@ export default class UserDetailsScreen extends Component{
                   style={styles.button}
                   onPress={()=>{
                     this.addBarters()
+                    
                     this.props.navigation.navigate('MyBarters')
                   }}>
                 <Text>I want to Exchange</Text>
