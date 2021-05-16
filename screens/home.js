@@ -22,6 +22,7 @@ export default class HomeScreen extends Component {
     super();
     this.state = {
       allRequests: [],
+      
     };
     this.requestRef = null;
   }
@@ -89,12 +90,7 @@ export default class HomeScreen extends Component {
 
 const styles = StyleSheet.create({
   
-  title: {
-    backgroundcolor: 'blue',
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'red',
-  },
+  
   
   button: {
     width:100,
