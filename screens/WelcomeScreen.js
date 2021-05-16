@@ -15,6 +15,7 @@ export default class WelcomeScreen extends Component{
     password:'',
     confirmPassword:'',
     isVisible:'false',
+    
     }
   }
 
@@ -31,7 +32,7 @@ export default class WelcomeScreen extends Component{
           email_id:this.state.emailId,
           address:this.state.address
         })
-        return  Alert.alert(
+        return  alert(
              'User Added Successfully',
              '',
              [
