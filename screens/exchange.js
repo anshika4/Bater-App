@@ -12,13 +12,19 @@ export default class ExchangeScreen extends Component{
     userName:firebase.auth().currentUser.email,
     }
   }
+createUniqueId(){
+    return Math.random().toString(36).substring(7);
+  }
 
 addItem = (itemName,discription) =>{
   var userName= this.state.userName
+      var randomRequestId = this.createUniqueId()
+      
 db.collection('exchange').add({
 "item_name"   : itemName,
 "description" : discription,
-"username":userName,
+"user_id":userName,
+"request_id"  : randomRequestId,
 })
 this.setState({
   itemName : '',
@@ -33,9 +39,10 @@ return  Alert.alert(
 );
 }
 
+ 
 
 
-l
+
 render(){
 return(
 <View style={{justifyContent: 'center',alignItems: 'center'}}>
@@ -54,7 +61,7 @@ value={this.state.itemName}
 <TextInput
 style={[styles.formTextInput,{height:300}]}
 multiline
-placeholder={"Why do you need the book (optional)"}
+placeholder={"Why do you need the book"}
 numberOfLines={8}
 onChangeText={(text)=>{
 this.setState({
