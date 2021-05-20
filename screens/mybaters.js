@@ -41,7 +41,47 @@ export default class BarterScreen extends Component {
     });
   };
 
+sendItem=(itemDetails)=>{
+if(itemDetails.request_status === "item Sent"){
+      var requestStatus = "Donor Interested"
+      db.collection("my_barters").doc(itemDetails.doc_id).update({
+        "request_status" : "Donor Interested"
+      })
+      this.sendNotification(itemDetails,requestStatus)
+    }
+    else{
+      var requestStatus = "item Sent"
+      db.collection("my_barters").doc(itemDetails.doc_id).update({
+        "request_status" : "item Sent"
+      })
+      this.sendNotification(itemDetails,requestStatus)
+    }
+}
 
+
+sendNotification=(itemDetails,requestStatus)=>{
+    var requestId = itemDetails.request_id
+    var donorId = itemDetails.donor_id
+    db.collection("all_notifications")
+    .where("request_id","==", requestId)
+    .where("donor_id","==",donorId)
+    .get()
+    .then((snapshot)=>{
+      snapshot.forEach((doc) => {
+        var message = ""
+        if(requestStatus === "item Sent"){
+          message = this.state.donorName + " sent you item"
+        }else{
+           message =  this.state.donorName  + " has shown interest in exchanging the item"
+        }
+        db.collection("all_notifications").doc(doc.id).update({
+          "message": message,
+          "notification_status" : "unread",
+          "date"                : firebase.firestore.FieldValue.serverTimestamp()
+        })
+      });
+    })
+  }
 
 
   componentDidMount() {
@@ -49,22 +89,27 @@ export default class BarterScreen extends Component {
   }
 
   renderItem = ({ item, i }) => {
-    return (
-      <ListItem
-        key={i}
-        title={item.item_name} 
+return (
+<ListItem
+key={i}
+title={item.item_name} 
 subtitle={'Requested By: '+item.requested_by+"\nStatus :" +item.request_status}  
 titleStyle={{ color: 'black', fontWeight: 'bold' }} 
 leftElement={<Icon name='book' type="font-awesome" color="#696969"/>}
-rightElement={
-<TouchableOpacity style={styles.button}>
-<Text style={{color:'white ' }}>Excahnge</Text>
-</TouchableOpacity>
-                  }
-                bottomDivider
-      />
-    );
-  };
+rightElement={ 
+<TouchableOpacity style={[
+styles.button,{backgroundColor:item.request_status==="item Sent"?"green":"#ff5722"}
+]} 
+onPress={()=>{
+this.sendItem(item)
+}}>
+<Text style={{color:'#ffff'}}>{item.request_status=="item Sent"?"item Sent":"Send item"}</Text> 
+</TouchableOpacity> 
+}
+bottomDivider
+/>
+);
+};
 
   keyExtractor = (item, index) => index.toString();
 
