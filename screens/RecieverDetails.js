@@ -16,13 +16,26 @@ export default class UserDetailsScreen extends Component{
           exchangerName : '',
           exchangerContact: '',
           exchangerAddress : '',
-          exchangerRequestDocId : ''
+          exchangerRequestDocId : '',
+          userName:"",
           
         }
 
     }
 
-    getUserDetails(){
+ getUserDetails=(userId)=>{
+      db.collection("users").where('email_id','==', userId).get()
+      .then((snapshot)=>{
+        snapshot.forEach((doc) => {
+          console.log(doc.data().first_name);
+          this.setState({
+            userName  :doc.data().first_name + " " + doc.data().last_name
+          })
+        })
+      })
+    }
+
+    getreceiverDetails(){
       console.log(this.state.recieverId)
         db.collection('users').where('email_id','==',this.state.recieverId).get()
         .then(snapshot=>{
@@ -34,8 +47,7 @@ export default class UserDetailsScreen extends Component{
                 })
             })
         });
-
-         db.collection('requested_items').where('request_id','==',this.state.requestId).get()
+         db.collection('exchange').where('request_id','==',this.state.requestId).get()
          .then(snapshot=>{
             snapshot.forEach(doc =>{
                 this.setState({
@@ -56,10 +68,22 @@ export default class UserDetailsScreen extends Component{
         }
         
         componentDidMount(){
-            this.getUserDetails()
+            this.getreceiverDetails()
+            this.getUserDetails(this.state.userId)
         }
 
-  
+  addNotification=()=>{
+  var message= this.state.userName+" has shown interest in exchanging the item";
+  db.collection("all_notifications").add({
+    "targeted_user_id":this.state.recieverId,
+    "donor_id":this.state.userId,
+    "request_id":this.state.requestId,
+    "item_name":this.state.itemName,
+    "date":firebase.firestore.FieldValue.serverTimestamp(),
+    "notification_status":"unread",
+    "message":message
+  })
+}
 
     render(){
         return(
@@ -108,7 +132,7 @@ export default class UserDetailsScreen extends Component{
                   style={styles.button}
                   onPress={()=>{
                     this.addBarters()
-                    
+                    this.addNotification();
                     this.props.navigation.navigate('MyBarters')
                   }}>
                 <Text>I want to Exchange</Text>
