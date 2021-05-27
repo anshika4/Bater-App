@@ -50,13 +50,16 @@ if(itemDetails.request_status === "item Sent"){
       this.sendNotification(itemDetails,requestStatus)
     }
     else{
+      var doc_id=this.props.navigation.getParam('docId'); 
+      console.log("docid"+doc_id); 
       var requestStatus = "item Sent"
-      db.collection("my_barters").doc(itemDetails.doc_id).update({
-        "request_status" : "item Sent"
-      })
-      this.sendNotification(itemDetails,requestStatus)
+      db.collection("my_barters").doc(doc_id).update({ 
+        "request_status" : "item Sent" 
+        })
+            this.sendNotification(itemDetails,requestStatus)
+        }
     }
-}
+
 
 
 sendNotification=(itemDetails,requestStatus)=>{
