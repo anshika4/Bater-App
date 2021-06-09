@@ -22,27 +22,26 @@ export default class ExchangeScreen extends Component {
       itemName: '',
       userName: firebase.auth().currentUser.email,
       IsExchangeRequestActive: '',
-      requestedItemName:"",
-      exchangeId:"",
-      itemStatus:"",
-      docId: ""
+      requestedItemName: '',
+      exchangeId: '',
+      itemStatus: '',
+      docId: '',
     };
   }
   createUniqueId() {
     return Math.random().toString(36).substring(7);
   }
 
-receivedItem=(itemName)=>{
-    var userId = this.state.userName
-    var exchangeId = this.state.exchangeId
+  receivedItem = (itemName) => {
+    var userId = this.state.userName;
+    var exchangeId = this.state.exchangeId;
     db.collection('received_items').add({
-        "user_id": userId,
-        "item_name":itemName,
-        "exchange_id"  : exchangeId,
-        "itemStatus"  : "received",
-
-    })
-  }
+      user_id: userId,
+      item_name: itemName,
+      exchange_id: exchangeId,
+      itemStatus: 'received',
+    });
+  };
 
   sendNotification = () => {
     db.collection('users')
@@ -74,55 +73,57 @@ receivedItem=(itemName)=>{
       });
   };
 
-getExchangeRequest =()=>{
-  var exchangeRequest=  db.collection('exchange_requests')
-    .where('username','==',this.state.userName)
-    .get()
-    .then((snapshot)=>{
-      snapshot.forEach((doc)=>{
-        if(doc.data().item_status !== "received"){
-          this.setState({
-            exchangeId : doc.data().exchangeId,
-            requestedItemName: doc.data().item_name,
-            itemStatus:doc.data().item_status,
-            docId     : doc.id
-          })
-        }
-      })
-  })
-}
+  getExchangeRequest = () => {
+    var exchangeRequest = db
+      .collection('exchange_requests')
+      .where('username', '==', this.state.userName)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          if (doc.data().item_status !== 'received') {
+            this.setState({
+              exchangeId: doc.data().exchangeId,
+              requestedItemName: doc.data().item_name,
+              itemStatus: doc.data().item_status,
+              docId: doc.id,
+            });
+          }
+        });
+      });
+  };
 
-getIsExchangeRequestActive(){
+  getIsExchangeRequestActive() {
     db.collection('users')
-    .where('username','==',this.state.userName)
-    .onSnapshot(querySnapshot => {
-      querySnapshot.forEach(doc => {
-        this.setState({
-          IsExchangeRequestActive:doc.data().IsExchangeRequestActive,
-          userDocId : doc.id
-        })
-      })
-    })
+      .where('username', '==', this.state.userName)
+      .onSnapshot((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.setState({
+            IsExchangeRequestActive: doc.data().IsExchangeRequestActive,
+            userDocId: doc.id,
+          });
+        });
+      });
   }
 
-updateExchangeRequestStatus=()=>{
+  updateExchangeRequestStatus = () => {
     //updating the book status after receiving the book
-    db.collection('requested_requests').doc(this.state.docId)
-    .update({
-      item_status : 'recieved'
-    })
+    db.collection('requested_requests').doc(this.state.docId).update({
+      item_status: 'recieved',
+    });
 
     //getting the  doc id to update the users doc
-    db.collection('users').where('username','==',this.state.userName).get()
-    .then((snapshot)=>{
-      snapshot.forEach((doc) => {
-        //updating the doc
-        db.collection('users').doc(doc.id).update({
-          IsExchangeRequestActive: false
-        })
-      })
-    })
-}
+    db.collection('users')
+      .where('username', '==', this.state.userName)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          //updating the doc
+          db.collection('users').doc(doc.id).update({
+            IsExchangeRequestActive: false,
+          });
+        });
+      });
+  };
 
   addItem = (itemName, discription) => {
     var userName = this.state.userName;
@@ -133,6 +134,8 @@ updateExchangeRequestStatus=()=>{
       description: discription,
       user_id: userName,
       request_id: randomRequestId,
+      "item_status" : "requested", 
+      "date" : firebase.firestore.FieldValue.serverTimestamp(),
     });
     this.setState({
       itemName: '',
@@ -145,8 +148,6 @@ updateExchangeRequestStatus=()=>{
       },
     ]);
   };
-
-  
 
   render() {
     if (this.state.IsExchangeRequestActive === true) {
