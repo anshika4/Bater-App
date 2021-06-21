@@ -125,7 +125,7 @@ export default class ExchangeScreen extends Component {
       });
   };
 
-  addItem = (itemName, discription) => {
+  addItem = async (itemName, discription) => {
     var userName = this.state.userName;
     var randomRequestId = this.createUniqueId();
 
@@ -134,9 +134,22 @@ export default class ExchangeScreen extends Component {
       description: discription,
       user_id: userName,
       request_id: randomRequestId,
-      "item_status" : "requested", 
-      "date" : firebase.firestore.FieldValue.serverTimestamp(),
+      item_status: 'requested',
+      date: firebase.firestore.FieldValue.serverTimestamp(),
     });
+    await this.getExchangeRequest();
+    db.collection('users')
+      .where('username', '==', userName)
+      .get()
+      .then()
+      .then((snapshot) => {
+        snapshot.forEach((doc) => {
+          db.collection('users').doc(doc.id).update({
+            IsExchangeRequestActive: true,
+          });
+        });
+      });
+
     this.setState({
       itemName: '',
       discription: '',
