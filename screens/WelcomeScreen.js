@@ -15,7 +15,7 @@ export default class WelcomeScreen extends Component{
     password:'',
     confirmPassword:'',
     isVisible:'false',
-    
+    currencyCode:''
     }
   }
 
@@ -116,6 +116,17 @@ multiline = {true}
 onChangeText={(text)=>{
 this.setState({
 address:text
+})
+}}
+/>
+
+<TextInput
+style={styles.TextInput}
+placeholder ={"Country Currency Code"}
+maxLength = {8} 
+onChangeText={(text)=>{
+this.setState({
+currencyCode: text
 })
 }}
 />
