@@ -25,6 +25,7 @@ export default class Exchange extends Component {
       itemStatus: '',
       docId: '',
       currencyCode: '',
+      itemValue: '',
     };
   }
 
@@ -56,6 +57,7 @@ export default class Exchange extends Component {
       description: description,
       exchangeId: exchangeId,
       item_status: 'requested',
+      item_value: this.state.itemValue,
       date: firebase.firestore.FieldValue.serverTimestamp(),
     });
     //working now
@@ -75,6 +77,7 @@ export default class Exchange extends Component {
     this.setState({
       itemName: '',
       description: '',
+      itemValue: '',
     });
 
     // NOTE: Comment below return statement when you test the app in ios
@@ -102,6 +105,7 @@ export default class Exchange extends Component {
           this.setState({
             IsExchangeRequestActive: doc.data().IsExchangeRequestActive,
             userDocId: doc.id,
+            urrencyCode: doc.data().currency_code,
           });
         });
       });
@@ -120,6 +124,7 @@ export default class Exchange extends Component {
               exchangeId: doc.data().exchangeId,
               requestedItemName: doc.data().item_name,
               itemStatus: doc.data().item_status,
+              itemValue: doc.data().item_value,
               docId: doc.id,
             });
           }
@@ -222,8 +227,8 @@ export default class Exchange extends Component {
               padding: 10,
               margin: 10,
             }}>
-            <Text> Currency Code</Text>
-            <Text>{this.state.currencyCode}</Text>
+            <Text> Item Value</Text>
+            <Text>{this.state.itemValue}</Text>
           </View>
 
           <View
@@ -280,13 +285,13 @@ export default class Exchange extends Component {
             <TextInput
               maxLength={8}
               style={styles.formTextInput}
-              placeholder={'Currency Code'}
+              placeholder={'Item Value'}
               onChangeText={(text) => {
                 this.setState({
-                  currencyCode: text,
+                  itemValue: text,
                 });
               }}
-              value={this.state.currencyCode}
+              value={this.state.itemValue}
             />
 
             <TextInput
