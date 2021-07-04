@@ -23,6 +23,7 @@ export default class UserDetailsScreen extends Component{
 
     }
 
+
  getUserDetails=(userId)=>{
       db.collection("users").where('email_id','==', userId).get()
       .then((snapshot)=>{
@@ -90,9 +91,9 @@ export default class UserDetailsScreen extends Component{
             <View style={styles.container}>
               <View style={{flex: 0.1}}>
                <Header 
-                leftComponent={<Icon name='arrow-left' type='feather' color='#696969' onPress={()=>this.props.navigation.goBack()}/>}
-                centerComponent={{text: "Exchange Items",style:{color: '#90A5A9',fontSize: 20,fontWeight:'bold'}}}
-                backgroundColor="#eaf8fe"
+                leftComponent={<Icon name='arrow-left' type='feather' color='white' onPress={()=>this.props.navigation.goBack()}/>}
+                centerComponent={{text: "Exchange Items",style:{color: 'white',fontSize: 20,fontWeight:'bold'}}}
+                backgroundColor="#8A2BE2"
                />
                </View>
                <View style={{flex: 0.3}}>
@@ -133,10 +134,10 @@ export default class UserDetailsScreen extends Component{
                   onPress={()=>{
                     this.addBarters()
                     this.addNotification();
-                    this.props.navigation.navigate('MyBarters')
+                  this.props.navigation.navigate('MyBarters',{docId:this.state.exchangerRequestDocId})
                   }}>
                 <Text>I want to Exchange</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> 
             )
             : null
           }
