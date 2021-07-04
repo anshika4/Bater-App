@@ -12,7 +12,8 @@ import {
 import firebase from 'firebase';
 import db from '../config';
 import MyHeader from '../components/MyHeader';
-
+import { RFValue } from 'react-native-responsive-fontsize';
+import { SearchBar, ListItem, Input } from 'react-native-elements';
 export default class Exchange extends Component {
   constructor() {
     super();
@@ -270,10 +271,11 @@ export default class Exchange extends Component {
           <MyHeader title="Add Item" navigation={this.props.navigation} />
           <KeyboardAvoidingView
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <TextInput
+            <Input
               style={styles.formTextInput}
-              placeholder={'Item Name'}
-              maxLength={8}
+              label={'Item Name'}
+              placeholder={'Item name'}
+              containerStyle={{ marginTop: RFValue(60) }}
               onChangeText={(text) => {
                 this.setState({
                   itemName: text,
@@ -282,23 +284,27 @@ export default class Exchange extends Component {
               value={this.state.itemName}
             />
 
-            <TextInput
+            <Input
               maxLength={8}
               style={styles.formTextInput}
-              placeholder={'Item Value'}
+              label={'Item Name'}
+              placeholder={'Item name'}
+              containerStyle={{ marginTop: RFValue(30) }}
               onChangeText={(text) => {
                 this.setState({
-                  itemValue: text,
+                  itemName: text,
                 });
               }}
               value={this.state.itemValue}
             />
 
-            <TextInput
+            <Input
+              style={styles.formTextInput}
+              containerStyle={{ marginTop: RFValue(30) }}
               multiline
               numberOfLines={4}
-              style={[styles.formTextInput, { height: 100 }]}
-              placeholder={'Description'}
+              label={'Reason'}
+              placeholder={'Why do you need the book'}
               onChangeText={(text) => {
                 this.setState({
                   description: text,
@@ -307,42 +313,32 @@ export default class Exchange extends Component {
               value={this.state.description}
             />
 
-            <TouchableOpacity
-              style={[styles.button, { marginTop: 10 }]}
-              onPress={() => {
-                this.addItem(this.state.itemName, this.state.description);
-              }}>
-              <Text
-                style={{ color: '#ffff', fontSize: 18, fontWeight: 'bold' }}>
-                Add Item
-              </Text>
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
-        </View>
-      );
-    }
-  }
-}
+<TouchableOpacity
+style={[styles.button, { marginTop: RFValue(30) }]}
+onPress={() => {this.addItem(this.state.itemName, this.state.description);}}>
+<Text style={{color: '#ffff', fontSize: 18, fontWeight: 'bold' }}>Add Item</Text>
+</TouchableOpacity>
+
+</KeyboardAvoidingView>
+</View>
+)}
+}}
 
 const styles = StyleSheet.create({
   formTextInput: {
     width: '75%',
-    height: 35,
-    alignSelf: 'center',
-    borderColor: '#ffab91',
-    borderRadius: 10,
+    height: RFValue(35),
     borderWidth: 1,
-    marginTop: 20,
     padding: 10,
   },
   button: {
-    width: '75%',
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-    backgroundColor: '#ff5722',
-    shadowColor: '#000',
+   width: "75%",
+    height: RFValue(60),
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: RFValue(50),
+    backgroundColor: "#9370DB",
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
       height: 8,
