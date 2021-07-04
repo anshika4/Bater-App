@@ -16,7 +16,7 @@ import db from '../config';
 import firebase from 'firebase';
 import {ListItem,Icon} from 'react-native-elements';
 import {Card,Header} from 'react-native-elements'
-
+import MyHeader from '../components/MyHeader';
 
 export default class BarterScreen extends Component {
   constructor() {
@@ -59,7 +59,6 @@ if(itemDetails.request_status === "item Sent"){
             this.sendNotification(itemDetails,requestStatus)
         }
     }
-
 
 
 sendNotification=(itemDetails,requestStatus)=>{
@@ -119,22 +118,8 @@ bottomDivider
   render() {
     return (
       <View style={{flex:1}}>
-<Header 
-leftComponent={
-<Icon name='arrow-left' 
-type='feather' 
-color='#696969' 
-onPress={()=>this.props.navigation.goBack()}
-/>
-}
-centerComponent={{text: "My Barters",
-style:{color: '#90A5A9',
-fontSize: 20,
-fontWeight:'bold'
-}}
-}
-backgroundColor="#eaf8fe"
-/>
+      <MyHeader title="My Barters" navigation={this.props.navigation} />
+
 
         <View style={{flex:1}}>
         {this.state.allBarters.length === 0 ? (
@@ -162,7 +147,7 @@ const styles = StyleSheet.create({
     height:30,
     justifyContent:'center',
     alignItems:'center',
-    backgroundColor:"#ff5722",
+    backgroundColor:"#FF00FF",
     shadowColor: "#000",
     shadowOffset: {
        width: 0,
