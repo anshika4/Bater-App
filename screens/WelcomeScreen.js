@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Alert, StyleSheet,Image,Modal,ScrollView,KeyboardAvoidingView} from 'react-native';
 import  db from '../config';
 import firebase from 'firebase';
-
+import { Icon } from "react-native-elements";
+import { RFValue } from "react-native-responsive-fontsize";
 export default class WelcomeScreen extends Component{
   constructor(){
     super()
@@ -18,6 +19,8 @@ export default class WelcomeScreen extends Component{
     currencyCode:''
     }
   }
+
+  
 
   signUp = (emailId, password,confirmPassword) =>{
     if(password !== confirmPassword){
@@ -71,12 +74,12 @@ visible={this.state.isVisible}
 >
 
 <View style={styles.modalContainor}>
-<ScrollView style={{width:'100%'}}>
+<ScrollView style={styles.scrollview}>
 <KeyboardAvoidingView style={styles.KeyboardAvoidingView}>
 <Text style={styles.modalTitle}>Registration</Text>
-
+<Text style={styles.label}>First Name </Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"First Name"}
 maxLength={8}
 onChangeText={(text)=>{
@@ -85,9 +88,9 @@ firstName: text
 })
 }}
 />
-
+<Text style={styles.label}>Last Name </Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"Last Name"}
 maxLength={8}
 onChangeText={(text)=>{
@@ -96,9 +99,9 @@ lastName: text
 })
 }}
 />
-
+<Text style={styles.label}>Mobile Number </Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"Mobile Number"}
 maxLength={10}
 keyboardType ={'numeric'}
@@ -108,9 +111,9 @@ phoneNumber: text
 })
 }}
 />
-
+<Text style={styles.label}>Address </Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"Address"}
 multiline = {true}
 onChangeText={(text)=>{
@@ -119,9 +122,9 @@ address:text
 })
 }}
 />
-
+<Text style={styles.label}>Currency Code </Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"Country Currency Code"}
 maxLength = {8} 
 onChangeText={(text)=>{
@@ -130,9 +133,9 @@ currencyCode: text
 })
 }}
 />
-
+<Text style={styles.label}>Last Name </Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"Email"}
 keyboardType ={'email-address'}
 onChangeText={(text)=>{
@@ -141,9 +144,9 @@ emailId: text
 })
 }}
 />
-
+<Text style={styles.label}>Password</Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"Password"}
 secureTextEntry = {true}
 onChangeText={(text)=>{
@@ -152,9 +155,9 @@ password: text
 })
 }}
 />
-
+<Text style={styles.label}>Confirm Password</Text>
 <TextInput
-style={styles.TextInput}
+style={styles.formInput}
 placeholder ={"Confirm Password"}
 secureTextEntry = {true}
 onChangeText={(text)=>{
@@ -166,13 +169,11 @@ confirmPassword: text
 
 <TouchableOpacity style={styles.regesterButton} 
 onPress={()=>this.signUp(this.state.emailId, this.state.password, this.state.confirmPassword)}>
-<Text style={styles.register}>Rigestration</Text>
+<Text style={styles.register}>Register</Text>
 </TouchableOpacity>
 
-<TouchableOpacity style={styles.regesterButton} 
-onPress={()=>this.setState({"isVisible":false})}>
-<Text style={styles.register}>cancel</Text>
-</TouchableOpacity>
+<Text style={styles.cancelButtonText}
+onPress={()=>{this.setState({ isModalVisible: false });}}>Cancel</Text>
 </KeyboardAvoidingView>
 </ScrollView>
 </View>
@@ -182,15 +183,10 @@ onPress={()=>this.setState({"isVisible":false})}>
 
 render(){
 return(
-<View style={{justifyContent: 'center',alignItems: 'center'}}>
-{
-this.showModal()
-}
-
+<View style={styles.container}>
+{this.showModal()}
+<View style={styles.c}>
 <Text style={styles.title}>  Bater System </Text>
-<Image
-style={styles.image} 
-source={require('../assets/images.png')}/>
 
 <TextInput
 style={styles.TextInput}
@@ -214,7 +210,7 @@ password: text
 />
 
 <TouchableOpacity
-style={styles.signButton}
+style={styles.loginButton}
 onPress={()=>{
 this.login(this.state.emailId, this.state.password)
 }}
@@ -228,6 +224,12 @@ onPress={()=>this.setState({"isVisible":true})}
 >
 <Text style={styles.signup}>sign up</Text>
 </TouchableOpacity>
+<Image
+            source={require("../assets/c.png")}
+            style={styles.bookImage}
+            resizeMode={"stretch"}
+          />
+</View>
 </View>
 )
 }
@@ -235,44 +237,70 @@ onPress={()=>this.setState({"isVisible":true})}
 
 const styles = StyleSheet.create({
 register:{
-textAlign:'center',
-justifyContent:'center',
-alignItems:'center',
-fontWeight:'bold',
-color:'red',
-backgroundColor:'white',
-fontSize:10
+ fontSize: RFValue(23),
+    fontWeight: "bold",
+    color: "#fff"
 },
  title :{
    fontSize:50,
-   fontWeight:'100',
    paddingBottom:30,
-   color : '#ff3d00'
+   color : 'white',
+   fontfamily:"Comic Sans MS",
  },
  TextInput:{
-   width:"75%",
-   height:35,
-   alignSelf:'center',
-   borderColor:'#ffab91',
-   borderRadius:10,
-   borderWidth:1,
-   marginTop:20,
-   padding:10
+   width: "90%",
+    height: RFValue(45),
+    padding: RFValue(10),
+    borderWidth: 1,
+    borderRadius: 0,
+     borderWidth: 2,
+    borderColor: "white",
+    paddingBottom: RFValue(10),
+    marginLeft: RFValue(20),
+    marginBottom: RFValue(14)
  },
  signButton:{
-   width:200,
-   height:40,
-   alignItems:'center',
-   justifyContent:'center',
-   borderWidth:2,
-   marginTop:30,
-   marginLeft:70,
-  backgroundColor:'white'
+   width: "75%",
+    height: RFValue(50),
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: RFValue(50),
+    backgroundColor: "white",
+    shadowColor: "#000",
+    marginLeft:RFValue(50),
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
+    marginTop: RFValue(20),
+ },
+ loginButton:{
+   width: "75%",
+    height: RFValue(50),
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: RFValue(50),
+    backgroundColor: "white",
+    shadowColor: "#000",
+    marginLeft:RFValue(50),
+    marginBottom:RFValue(10),
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
+    marginTop: RFValue(20),
  },
  signup:{
    color:'red',
    fontSize:15,
-   fontWeight:'bold'
+   fontWeight:'bold',
+   
  },
 image:{
 width: 150,
@@ -289,7 +317,7 @@ modalTitle :{
 justifyContent:'center',
 alignSelf:'center',
 fontSize:30,
-color:'#ff5722',
+color:'purple',
 margin:50
 },
 modalContainor:{
@@ -304,12 +332,60 @@ marginTop:80,
 marginBottom:80,
 },
 regesterButton:{
-width:200,
-height:40,
-alignItems:'center',
-justifyContent:'center',
-borderWidth:1,
-borderRadius:10,
-marginTop:30
-},
+    width: "85%",
+    height: RFValue(50),
+    marginTop: RFValue(20),
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: RFValue(3),
+    backgroundColor: "purple",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 8
+    },
+    shadowOpacity: 0.44,
+    shadowRadius: 10.32,
+    elevation: 16,
+    marginTop: RFValue(10)
+  },
+  label: {
+    fontSize: RFValue(13),
+    color: "#717D7E",
+    fontWeight: "bold",
+    marginRight:RFValue(150)
+  },
+  cancelButtonText: {
+    fontSize: RFValue(20),
+    fontWeight: "bold",
+    color: "#8B008B",
+    marginTop: RFValue(10)
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
+  c: {
+    flex: 1,
+    backgroundColor: "purple"
+  },
+  scrollview: {
+    flex: 1,
+    backgroundColor: "#fff"
+  },
+  formInput: {
+    width: "90%",
+    height: RFValue(45),
+    padding: RFValue(10),
+    borderWidth: 1,
+    borderRadius: 2,
+    borderColor: "grey",
+    paddingBottom: RFValue(10),
+    marginLeft: RFValue(20),
+    marginBottom: RFValue(14)
+  },
+  bookImage: {
+    width: "100%",
+    height: RFValue(220)
+  }
 })
