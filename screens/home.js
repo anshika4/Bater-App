@@ -57,7 +57,7 @@ export default class HomeScreen extends Component {
                 this.props.navigation.navigate("RecieverDetails",{"details": item})
              }}>
           
-            <Text style={{color:'#ffff'}}>Excahnge</Text>
+            <Text style={{color:'#ffff'}}>Exchange</Text>
           </TouchableOpacity>
         }
                 bottomDivider
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     height:30,
     justifyContent:'center',
     alignItems:'center',
-    backgroundColor:"#ff5722",
+    backgroundColor:"#FF00FF",
     shadowColor: "#000",
     shadowOffset: {
        width: 0,
