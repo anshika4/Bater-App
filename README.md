@@ -14,4 +14,4 @@ Snack is Open Source. You can find the code on the [GitHub repo](https://github.
 
 
 
-SNACK LINK-https://snack.expo.io/@anshika30/bater
+SNACK LINK-https://snack.expo.io/@anshika12/bater
